@@ -8,6 +8,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { UserIcon } from '@heroicons/react/24/solid';
 
 
 // Map of links to display in the side navigation.
@@ -20,6 +21,8 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  { name: 'Employee', href: '/dashboard/employee', icon: UserIcon },
+
 ];
 export default function NavLinks() {
   const pathname = usePathname();

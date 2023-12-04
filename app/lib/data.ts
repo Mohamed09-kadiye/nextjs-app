@@ -32,6 +32,21 @@ export async function fetchRevenue() {
   }
 }
 
+interface Employee {
+  id: number;
+  name: string;
+  address: string;
+  tell: string;
+}
+async function getEmployees(): Promise<Employee[]> {
+    
+  const res = await fetch('http://localhost:8080/api/employees');
+  if (!res.ok) {
+    console.log('No Data');
+  }
+  return res.json();
+}
+
 export async function fetchLatestInvoices() {
   try {
     const data = await sql<LatestInvoiceRaw>`
