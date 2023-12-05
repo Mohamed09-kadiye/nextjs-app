@@ -15,30 +15,30 @@ export default function CreateEmployee() {
 
   const sendForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+const res ="1"
+    // try {
+    //   const res = await fetch("http://localhost:8080/api/employees/", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       name,
+    //       address,
+    //       tell,
+    //       // Remove status if not needed in the form
+    //       // status,
+    //     }),
+    //   });
 
-    try {
-      const res = await fetch("http://localhost:8080/api/employees/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          address,
-          tell,
-          // Remove status if not needed in the form
-          // status,
-        }),
-      });
-
-      if (!res.ok) {
+      if (!res) {
         throw new Error("Failed to create employee");
       }
 
       // If successful, refresh and navigate
       router.refresh();
       router.push("/employees/");
-    } catch (error) {
-      console.error("Error creating employee:", error);
-    }
+    // } catch (error) {
+    //   console.error("Error creating employee:", error);
+    // }
   };
 
   return (
