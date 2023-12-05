@@ -1,7 +1,7 @@
 // Import necessary components and libraries
 "use client";
 import Link from "next/link";
-import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -11,20 +11,21 @@ export default function CreateEmployee() {
   const [name, setName] = useState("");
   const [tell, setTell] = useState("");
   const [address, setAddress] = useState("");
-  const [status, setStatus] = useState("");
+  // Add status state
 
   const sendForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:8080/api/employees/save", {
+      const res = await fetch("http://localhost:8080/api/employees/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           address,
           tell,
-          status,
+          // Remove status if not needed in the form
+          // status,
         }),
       });
 
@@ -42,7 +43,7 @@ export default function CreateEmployee() {
 
   return (
     <div className="rounded-md bg-gray-50 p-4 md:p-6">
-    <div className="">
+      <div className="">
         <form onSubmit={sendForm}>
           {/* Employee Name */}
           <div className="mb-4">
@@ -57,7 +58,7 @@ export default function CreateEmployee() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                placeholder="John Doe"
+                placeholder="Meymuun"
               />
               <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
             </div>
@@ -98,7 +99,7 @@ export default function CreateEmployee() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                  placeholder="123 Main St"
+                  placeholder="Adaado Main St"
                 />
                 <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
               </div>
@@ -106,7 +107,8 @@ export default function CreateEmployee() {
           </div>
 
           {/* Employee Status */}
-          <fieldset className="mb-4">
+          {/* Commented out for now, uncomment if needed */}
+          {/* <fieldset className="mb-4">
             <legend className="block text-sm font-medium">Employee Status</legend>
             <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
               <div className="flex gap-4">
@@ -146,21 +148,16 @@ export default function CreateEmployee() {
                 </div>
               </div>
             </div>
-          </fieldset>
+          </fieldset> */}
 
           <div className="mt-6 flex justify-end gap-4">
             <Link
-              href="/employees/"
+              href="/dashboard/invoices"
               className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
             >
               Cancel
             </Link>
-            <button
-              type="submit"
-              className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:ring-0 active:bg-primary-700"
-            >
-              Submit
-            </button>
+            <Button type="submit">Create Invoice</Button>
           </div>
         </form>
       </div>

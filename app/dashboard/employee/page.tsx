@@ -1,43 +1,49 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
-import Table from '@/app/ui/invoices/table';
 import { lusitana } from '@/app/ui/fonts';
-import { Suspense } from 'react';
 import { Updateemployee, Deleteemployee,CreateEmployee } from '@/app/dashboard/employee/buttons';
 
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 // Define an interface for the employee object
-interface Employee {
-  id: number;
-  name: string;
-  address: string;
-  tell: string;
-}
-
-async function getEmployees(): Promise<Employee[]> {
-    
-    const res = await fetch('http://localhost:8080/api/employees');
+interface EmployeesProps {
+    searchParams?: {
+      query?: string;
+      page?: string;
+    };
+  }
+  
+  interface Employee {
+    id: number;
+    name: string;
+    address: string;
+    tell: string;
+  }
+  
+  async function getEmployees(query: string): Promise<Employee[]> {
+    const res = await fetch(`http://localhost:8080/api/employees?query=${query}`);
     if (!res.ok) {
       console.log('No Data');
     }
     return res.json();
   }
   
-  async function Employees({
-      searchParams,
-    }: {
-      searchParams?: {
-        query?: string;
-        page?: string;
-      };
-    }) {
-      
-    const list = await getEmployees();
+  async function Employees({ searchParams }: EmployeesProps) {
+    const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
     const query = searchParams?.query || '';
-    const currentPage = Number(searchParams?.page) || 1;
+  
+    useEffect(() => {
+      const fetchEmployees = async () => {
+        const employees = await getEmployees(query);
+        setFilteredEmployees(employees);
+      };
+  
+      fetchEmployees();
+    }, [query]);
   
   return (
     <div className="mt-6 flow-root">
@@ -75,7 +81,7 @@ async function getEmployees(): Promise<Employee[]> {
               </tr>
             </thead>
             <tbody className="bg-white">
-            {list.map((employee: Employee) => (
+        {filteredEmployees.map((employee: Employee) => (
                 <tr
                   key={employee.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
